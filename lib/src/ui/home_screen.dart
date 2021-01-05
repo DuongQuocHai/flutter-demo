@@ -1,55 +1,74 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/models/shoes.dart';
-import 'package:flutter_app/src/widgets/item_shose.dart';
+import 'package:flutter_app/src/services/shoes_service.dart';
+import 'package:flutter_app/src/ui/shoes_modify_screen.dart';
+import 'package:flutter_app/src/widgets/dialog_delete_shoes.dart';
+import 'package:flutter_app/src/widgets/item_shoes.dart';
+import 'package:get_it/get_it.dart';
+import 'package:flutter_app/src/models/api_response.dart';
 
-class HomePage extends StatelessWidget {
-  final shoes = [
-    new Shoes(
-        sId: "5fa9425e64ac8b0017c73fc7",
-        name: "PUMA Men's Tazon 6 FM Running Shoe",
-        price: 721,
-        images:
-            "https://images.unsplash.com/photo-1593620877307-39a5895e4adc?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE1NjEwNX0",
-        shopInfo: "TSIODFO",
-        description:
-            "A moustache beautifully compliments his hair and cheekbones and leaves a heartbreaking memory of his luck in battles.",
-        rating: 1,
-        totalRated: 32,
-        iV: 0),
-    new Shoes(
-        sId: "5fa9425e64ac8b0017c73fc7",
-        name:
-            "Santiro Men's Running Shoes Breathable Knit Slip On Sneakers Lightweight Athletic Shoes Casual Sports Shoes",
-        price: 721,
-        images:
-            "https://images.unsplash.com/photo-1593620877307-39a5895e4adc?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE1NjEwNX0",
-        shopInfo: "TSIODFO",
-        description:
-            "A moustache beautifully compliments his hair and cheekbones and leaves a heartbreaking memory of his luck in battles.",
-        rating: 1,
-        totalRated: 32,
-        iV: 0),
-  ];
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  ShoesService get service => GetIt.I<ShoesService>();
+  APIResponse<List<Shoes>> _apiResponse;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    _fectchShoes();
+    super.initState();
+  }
+
+  _fectchShoes() async {
+    setState(() {
+      _isLoading = true;
+    });
+    _apiResponse = await service.getShoes();
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => ShoesModifyScreen()));
+        },
         child: Icon(Icons.add),
       ),
       appBar: AppBar(
         title: Text("HOME SCREEN"),
       ),
-      body: ListView.separated(
-          separatorBuilder: (BuildContext context, int index) =>
-              const Divider(),
-          itemBuilder: (_, index) {
-            return ItemShose(title: shoes[index].name,);
-          },
-          itemCount: shoes.length),
+      body: _isLoading
+          ? CircularProgressIndicator()
+          : ListView.separated(
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(),
+              itemBuilder: (_, index) {
+                return Dismissible(
+                  key: ValueKey(_apiResponse.data[index].name),
+                  direction: DismissDirection.startToEnd,
+                  onDismissed: (direction) {},
+                  confirmDismiss: (direction) async {
+                    final result = await showDialog(
+                        context: context, builder: (_) => DialogDeleteShoes());
+                    return result;
+                  },
+                  child: ItemShose(
+                    title: _apiResponse.data[index].name,
+                    urlImage: _apiResponse.data[index].images,
+                    id: _apiResponse.data[index].sId,
+                  ),
+                );
+              },
+              itemCount: _apiResponse.data.length),
     );
   }
 }

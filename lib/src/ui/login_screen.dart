@@ -23,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: Container(
         constraints: BoxConstraints.expand(),
         padding: EdgeInsets.all(20.0),
@@ -123,39 +124,35 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 5),
-                        child: Text(
-                          'NEW USER?',
-                          style: TextStyle(
-                              color: Colors.black38,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Text(
-                        'SIGN UP',
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5),
+                      child: Text(
+                        'NEW USER?',
                         style: TextStyle(
-                            color: Colors.blueAccent,
-                            fontWeight: FontWeight.bold),
+                            color: Colors.black38, fontWeight: FontWeight.bold),
                       ),
-                    ],
-                  ),
-                  Text(
-                    'FORGOT PASSWORD?',
-                    style: TextStyle(
-                        color: Colors.blueAccent, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            )
+                    ),
+                    Text(
+                      'SIGN UP',
+                      style: TextStyle(
+                          color: Colors.blueAccent,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                Text(
+                  'FORGOT PASSWORD?',
+                  style: TextStyle(
+                      color: Colors.blueAccent, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
           ],
         ),
       ),
