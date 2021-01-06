@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/models/shoes.dart';
 import 'package:flutter_app/src/ui/shoes_modify_screen.dart';
 
-class ItemShose extends StatelessWidget {
+// ignore: must_be_immutable
+class ItemShoes extends StatelessWidget {
   String title;
   String urlImage;
   String id;
 
-  ItemShose({Key key, this.title, this.urlImage, this.id}) : super(key: key);
+  ItemShoes({Key key, this.title, this.urlImage, this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

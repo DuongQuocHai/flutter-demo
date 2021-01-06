@@ -36,39 +36,48 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ShoesModifyScreen()));
-        },
-        child: Icon(Icons.add),
-      ),
-      appBar: AppBar(
-        title: Text("HOME SCREEN"),
-      ),
-      body: _isLoading
-          ? CircularProgressIndicator()
-          : ListView.separated(
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
-              itemBuilder: (_, index) {
-                return Dismissible(
-                  key: ValueKey(_apiResponse.data[index].name),
-                  direction: DismissDirection.startToEnd,
-                  onDismissed: (direction) {},
-                  confirmDismiss: (direction) async {
-                    final result = await showDialog(
-                        context: context, builder: (_) => DialogDeleteShoes());
-                    return result;
-                  },
-                  child: ItemShose(
-                    title: _apiResponse.data[index].name,
-                    urlImage: _apiResponse.data[index].images,
-                    id: _apiResponse.data[index].sId,
-                  ),
-                );
-              },
-              itemCount: _apiResponse.data.length),
-    );
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ShoesModifyScreen()));
+          },
+          child: Icon(Icons.add),
+        ),
+        appBar: AppBar(
+          title: Text("HOME SCREEN"),
+        ),
+        body: Builder(builder: (_) {
+          if (_isLoading) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (_apiResponse.error) {
+            return Center(child: Text(_apiResponse.errorMessage));
+          }
+          return Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: ListView.separated(
+                separatorBuilder: (BuildContext context, int index) =>
+                    const Divider(),
+                itemBuilder: (_, index) {
+                  return Dismissible(
+                    key: ValueKey(_apiResponse.data[index].name),
+                    direction: DismissDirection.startToEnd,
+                    onDismissed: (direction) {},
+                    confirmDismiss: (direction) async {
+                      final result = await showDialog(
+                          context: context,
+                          builder: (_) => DialogDeleteShoes());
+                      return result;
+                    },
+                    child: ItemShoes(
+                      title: _apiResponse.data[index].name,
+                      urlImage: _apiResponse.data[index].images,
+                      id: _apiResponse.data[index].sId,
+                    ),
+                  );
+                },
+                itemCount: _apiResponse.data.length),
+          );
+        }));
   }
 }
