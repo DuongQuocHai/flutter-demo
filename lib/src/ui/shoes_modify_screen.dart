@@ -56,6 +56,14 @@ class _ShoesModifyScreenState extends State<ShoesModifyScreen> {
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
+                  Container(
+                    width: double.infinity,
+                    height: 250,
+                    child: Image(
+                      image: NetworkImage(shoe.images),
+                      fit: BoxFit.fitWidth,
+                    ),
+                  ),
                   TextField(
                     style: TextStyle(fontSize: 18, color: Colors.black),
                     controller: _nameController,

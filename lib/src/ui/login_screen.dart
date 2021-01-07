@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/blocs/login_bloc.dart';
+import 'package:flutter_app/src/services/auth_service.dart';
+import 'package:get_it/get_it.dart';
 
 import 'home_screen.dart';
 
@@ -10,15 +14,46 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   LoginBloc bloc = new LoginBloc();
-
+  AuthService get authService => GetIt.I<AuthService>();
   bool _showPass = false;
   TextEditingController _userControler = new TextEditingController();
   TextEditingController _passControler = new TextEditingController();
 
-  // var _userNameErr = "Please enter user name";
-  // var _passWordErr = "Please enter password";
-  // var _userNameInvalid = false;
-  // var _passWordInvalid = false;
+  void onSignIn() async {
+    if (bloc.isValidInfo(_userControler.text, _passControler.text)) {
+      Navigator.push(context, MaterialPageRoute(builder: gotoHome));
+
+      // final result = await authService.loginService(
+      //     _userControler.text, _passControler.text);
+      // if (!result.error) {
+      //   Navigator.push(context, MaterialPageRoute(builder: gotoHome));
+      // } else {
+      //   showDialog(
+      //       context: context,
+      //       builder: (_) => AlertDialog(
+      //             title: Text('Warning'),
+      //             content: Text('Login faild'),
+      //             actions: [
+      //               FlatButton(
+      //                   onPressed: () {
+      //                     Navigator.of(context).pop(false);
+      //                   },
+      //                   child: Text('NO')),
+      //             ],
+      //           ));
+      // }
+    }
+  }
+
+  Widget gotoHome(BuildContext context) {
+    return HomePage();
+  }
+
+  void onToggleShowPass() {
+    setState(() {
+      _showPass = !_showPass;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,53 +192,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  // void onSignIn() {
-  //   setState(() {
-  //     if (_userControler.text.length <= 0) {
-  //       _userNameInvalid = true;
-  //     } else {
-  //       _userNameInvalid = false;
-  //     }
-  //     if (_passControler.text.length <= 0) {
-  //       _passWordErr = "Please enter password";
-  //       _passWordInvalid = true;
-  //     } else if (_passControler.text.length < 6) {
-  //       _passWordErr = "Password includes 6 characters";
-  //       _passWordInvalid = true;
-  //     } else {
-  //       _passWordInvalid = false;
-  //     }
-  //     if (!_userNameInvalid && !_passWordInvalid) {
-  //       // Navigator.push(context, MaterialPageRoute(builder: gotoHome));
-  //       Navigator.push(
-  //           context, MaterialPageRoute(builder: (context) => HomePage()));
-  //     }
-  //   });
-  // }
-
-  void onSignIn() {
-    if (bloc.isValidInfo(_userControler.text, _passControler.text)) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomePage()));
-    }
-  }
-
-  Widget gotoHome(BuildContext context) {
-    return HomePage();
-  }
-
-  // void clearErr() {
-  //   setState(() {
-  //     _userNameInvalid = false;
-  //     _passWordInvalid = false;
-  //   });
-  // }
-
-  void onToggleShowPass() {
-    setState(() {
-      _showPass = !_showPass;
-    });
   }
 }
