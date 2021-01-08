@@ -1,14 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter_app/src/models/api_response.dart';
-import 'package:flutter_app/src/models/user.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {
   static const API = 'http://footcer-shop.herokuapp.com';
 
   Future<APIResponse<bool>> loginService(String phone, String password) async {
-    var headers = {'Content-Type': 'application/json'};
+    // var headers = {'Content-Type': 'application/json'};
     try {
       var response = await http.post(API + '/users/login',
           body: {"phone": phone, "password": password});

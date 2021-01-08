@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/ui/shoes_detail_screen.dart';
-import 'package:flutter_app/src/ui/shoes_modify_screen.dart';
 import 'package:flutter_app/src/widgets/RowIconText.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -103,7 +100,7 @@ class _ItemShoesState extends State<ItemShoes> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'SOLD: ${widget.sale} units',
+                                      'SOLD: ${widget.sale} pairs',
                                       style: TextStyle(
                                           color: Colors.green,
                                           fontWeight: FontWeight.bold,

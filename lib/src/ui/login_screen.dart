@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/blocs/login_bloc.dart';
 import 'package:flutter_app/src/services/auth_service.dart';
